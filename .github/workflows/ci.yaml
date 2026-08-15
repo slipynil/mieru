@@ -14,7 +14,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version: '1.24'
+          go-version: '1.26.3'
       - name: Create vendor directory
         run: make vendor
       - name: Build binaries
@@ -35,3 +35,12 @@ jobs:
           name: coverage
           path: |
             coverage.html
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            release/*.deb
+            release/*.rpm
+            release/*.tar.gz
+            release/*.zip
